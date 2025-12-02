@@ -10,17 +10,14 @@ foreach (var line in lines)
     for (ulong i = from; i <= to; i++)
     {
         string id = i.ToString();
-        string firsthalf = id.Substring(0, id.Length / 2);
-        string secondhalf = id.Substring(id.Length / 2);
-        if (firsthalf == secondhalf)
-            sumpart1 += i;
-
         for (int j = 1; j <= id.Length / 2; j++)
         {
             var chunks = Split(id, j).ToList();
             bool invalid = chunks.All(x => x == chunks.First());
             if (invalid && id.Length == chunks.Count * chunks.First().Length)
             {
+                if (chunks.Count == 2)
+                    sumpart1 += i;
                 pt2matches.Add(i);
             }
         }
