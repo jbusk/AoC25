@@ -1,21 +1,20 @@
-﻿var lines = File.ReadAllText("input.txt").Split(',').Select((x => x.Split('-')));
+﻿var ranges = File.ReadAllText("input.txt").Split(',').Select((x => x.Split('-')));
 (long sumpart1, long sumpart2) = (0, 0);
 
-foreach (var line in lines)
+foreach (var range in ranges)
 {
-    for (long i = long.Parse(line[0]); i <= long.Parse(line[1]); i++)
+    for (long i = long.Parse(range[0]); i <= long.Parse(range[1]); i++)
     {
-        string id = i.ToString();
-	string firsthalf = id.Substring(0, id.Length / 2);
-        string secondhalf = id.Substring(id.Length / 2);
-        if (firsthalf == secondhalf)
+        string currentId = i.ToString();
+        var idLength = (int)Math.Floor(Math.Log10(i)) + 1;
+        var halfLength = idLength / 2;
+        if (currentId[..halfLength] == currentId[halfLength..])
             sumpart1 += i;
 
-        for (int j = 1; j <= id.Length / 2; j++)
+        for (int substringLength = 1; substringLength <= halfLength; substringLength++)
         {
-            var chunks = Split(id, j).ToList();
-            bool invalid = chunks.All(x => x == chunks.First());
-            if (invalid && id.Length == chunks.Count * chunks.First().Length)
+            var chunks = Enumerable.Range(0, idLength / substringLength).Select(chunksize => currentId.Substring(chunksize * substringLength, substringLength)).ToList();
+            if (chunks.All(x => x == chunks.First()) && idLength == chunks.Count * chunks.First().Length)
             {
                 sumpart2 += i;
                 break;
@@ -26,8 +25,3 @@ foreach (var line in lines)
 
 Console.WriteLine($"Part 1: {sumpart1}");
 Console.WriteLine($"Part 2: {sumpart2}");
-IEnumerable<string> Split(string str, int chunkSize)
-{
-    return Enumerable.Range(0, str.Length / chunkSize)
-        .Select(i => str.Substring(i * chunkSize, chunkSize));
-}
