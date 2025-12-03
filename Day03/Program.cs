@@ -1,23 +1,26 @@
 ﻿var lines = File.ReadAllLines("input.txt");
-(int sumpart1, int sumpart2)  = (0, 0);
+(long sumpart1, long sumpart2) = (0, 0);
 
 foreach (var line in lines)
 {
-    var digits = line.ToArray().Select(x=> int.Parse(x.ToString())).ToList();
-    int highest = 0;
-    for (int i = 0; i < digits.Count-1; i++)
-    {
-        int tens = digits[i] * 10;
-        for (int j = i+1; j < digits.Count; j++)
-        {
-            int ones = digits[j];
-            int curr = tens + ones;
-            if (curr > highest)
-                highest = curr;
-        }
-    }
-    sumpart1 += highest;
+    var digits = line.ToArray().Select(x => int.Parse(x.ToString())).ToList();
+    sumpart1 += CalculateMax(digits, 2);
+    sumpart2 += CalculateMax(digits, 12);
 }
 
 Console.WriteLine($"Part 1: {sumpart1}");
 Console.WriteLine($"Part 2: {sumpart2}");
+
+long CalculateMax(List<int> bank, int slots)
+{
+    var lastIndex = -1;
+    var selectedBank = new List<int>();
+    while (slots-- > 0)
+    {
+        var availableBanks = bank.Skip(lastIndex + 1).Take((bank.Count - (lastIndex + 1)) - slots).ToList();
+        var maxValue = availableBanks.Max();
+        lastIndex = bank.IndexOf(maxValue, lastIndex + 1);
+        selectedBank.Add(maxValue);
+    }
+    return long.Parse(string.Join("", selectedBank));
+}
