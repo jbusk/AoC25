@@ -1,6 +1,5 @@
 ﻿var lines = File.ReadAllLines("input.txt");
 var (part1, part2) = (0, 0L);
-
 foreach (var line in lines)
 {
     var digits = line.ToArray().Select(x => int.Parse(x.ToString())).ToList();
@@ -11,7 +10,7 @@ foreach (var line in lines)
 Console.WriteLine($"Part 1: {part1}");
 Console.WriteLine($"Part 2: {part2}");
 
-string GetBest(string bank, int slots)
+char[] GetBest(string bank, int slots)
 {
     var bankarray = bank.ToArray();
     var bestindex = -1;
@@ -25,5 +24,5 @@ string GetBest(string bank, int slots)
         best.Add(maxValue);
     }
 
-    return string.Join("", best);
+    return best.ToArray();
 }
