@@ -11,9 +11,6 @@ for (int y = 0; y < max; y++)
         var value = lines[x][y];
         if (value == '@')
             grid.Add(position);
-        // if (value == '@' && NumberOfNeigbourRolls(position) < 4)
-        //     part1++;
-        // grid[position] = NumberOfNeigbourRolls(position);
     }
 }
 
@@ -30,7 +27,6 @@ while (true)
         Console.WriteLine("Part 1: " + count);
         once = false;
     }
-    // PrintGrid(accessable);
     grid.RemoveWhere(x => accessable.Contains(x));
 }
 
@@ -46,12 +42,12 @@ int NumberOfNeigbourRolls(Position pos)
     ];
     foreach (var rel in relPos)
     {
-        var newPos = (pos.x + rel.x, pos.y + rel.y);
-        if (InRange(newPos, max) && grid.Contains((newPos.Item1,newPos.Item2)))
+        Position newPos = (pos.x + rel.x, pos.y + rel.y);
+        if (InRange(newPos) && grid.Contains(newPos))
             count++;
     }
 
     return count;
 }
 
-bool InRange(Position pos, int max) => (pos.x < max && pos.x >= 0 && pos.y < max && pos.y >= 0);
+bool InRange(Position pos) => (pos.x < max && pos.x >= 0 && pos.y < max && pos.y >= 0);
