@@ -8,8 +8,7 @@ for (int y = 0; y < max; y++)
     for (int x = 0; x < max; x++)
     {
         Position position = new(x, y);
-        var value = lines[x][y];
-        if (value == '@')
+        if (lines[x][y] == '@')
             grid.Add(position);
     }
 }
@@ -17,7 +16,7 @@ for (int y = 0; y < max; y++)
 bool once = true;
 while (true)
 {
-    var accessable = grid.Where(x => NumberOfNeigbourRolls(x) < 4).ToHashSet();
+    var accessable = grid.Where(Acessible).ToHashSet();
     var count = accessable.Count();
     if (count == 0)
         break;
@@ -32,7 +31,7 @@ while (true)
 
 Console.WriteLine("Part 2: " + part2);
 
-int NumberOfNeigbourRolls(Position pos)
+bool Acessible(Position pos)
 {
     int count = 0;
     Position[] relPos =
@@ -43,11 +42,11 @@ int NumberOfNeigbourRolls(Position pos)
     foreach (var rel in relPos)
     {
         Position newPos = (pos.x + rel.x, pos.y + rel.y);
-        if (InRange(newPos) && grid.Contains(newPos))
+        if (grid.Contains(newPos))
             count++;
+        if (count == 4)
+            return false;
     }
 
-    return count;
+    return true;
 }
-
-bool InRange(Position pos) => (pos.x < max && pos.x >= 0 && pos.y < max && pos.y >= 0);
