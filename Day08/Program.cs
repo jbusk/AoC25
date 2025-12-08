@@ -53,7 +53,6 @@ int Part1(IEnumerable<(Position, Position)> pairs)
     return sizes.Aggregate(1, (a, b) => a * b);
 }
 
-
 int Part2(IEnumerable<(Position, Position)> pairs, int length)
 {
     var circuits = new Dictionary<Position, HashSet<Position>>();
