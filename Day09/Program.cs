@@ -46,18 +46,9 @@ foreach (var posA in red)
 
 Console.WriteLine($"Part 1: {part1}");
 
-Console.WriteLine($"{maxX} {maxY}");
-
-//CreateBitmap("01-begin.bmp");
-
 var topCorner = redcorner.OrderBy(p => p.x).MinBy(p => p.y);
-//Visualise(topCorner);
-//Visualise((topCorner.x +1, topCorner.y +1));
-// Recurse((0, 0));
-//PaintGrayTiles((0, 0));
 
-PaintGreenTiles((topCorner.x +1, topCorner.y +1));
-//Visualise();
+PaintGreenTiles((topCorner.x + 1, topCorner.y + 1));
 
 Console.WriteLine("Done painting");
 
@@ -78,64 +69,9 @@ foreach (var posA in redcorner)
 }
 
 Console.WriteLine($"Part 2: {part2}");
-// Visualise();
-
-// void CreateBitmap(string filename) {
-//     RawBitMap bmp = new(maxX, maxY);
-//     var red = new RawColor(255,0,0);
-//     var green = new RawColor(0,255,0);
-//     var gray = new RawColor(100,100,100);
-//     for (int x = 0; x < maxX; x++)
-//     {
-//         for (int y = 0; y < maxY; y++)
-//         {
-// 	    if (red.Contains(new Position(x, y))) 
-// 		bmp.SetPixel(x,y, red);
-//             else if (green.Contains(new Position(x, y))) 
-// 		bmp.SetPixel(x,y, green);
-//             else
-// 		bmp.SetPixel(x,y, gray);
-//         }
-//     }
-//     bmp.Save(filename);
-// }
-
-void Visualise(Position? mark = null)
-{
-    for (int x = 0; x < maxX; x++)
-    {
-        for (int y = 0; y < maxY; y++)
-        {
-	    if (mark is not null && mark == (x,y))
-		Console.Write('¤');
-            else if (red.Contains(new Position(x, y)))
-                Console.Write('#');
-            else if (green.Contains(new Position(x, y)))
-                Console.Write('X');
-            else if (gray.Contains(new Position(x, y)))
-                Console.Write('.');
-            else
-                Console.Write(' ');
-        }
-
-        Console.WriteLine();
-    }
-}
 
 long Multiply(Position posA, Position posB) =>
     ((long)(Math.Abs(posA.x - posB.x) + 1)) * ((long)(Math.Abs(posA.y - posB.y) + 1));
-
-
-void Recurse(Position pos)
-{
-    if (red.Contains(pos) || green.Contains(pos) || gray.Contains(pos))
-        return;
-    gray.Add(pos);
-    foreach (var npos in Neighbours(pos))
-    {
-        Recurse(npos);
-    }
-}
 
 void PaintGreenTiles(Position position)
 {
@@ -145,14 +81,14 @@ void PaintGreenTiles(Position position)
     {
         var pos = queue.Dequeue();
         green.Add(pos);
-        foreach (var p in Neighbours(pos)) {
-	    if (green.Contains(p))
-		continue;	  
+        foreach (var p in Neighbours(pos))
+        {
+            if (green.Contains(p))
+                continue;
             queue.Enqueue(p);
-	}
+        }
     }
 }
-
 
 static IEnumerable<Position> PointsInArea(Position posA, Position posB)
 {
@@ -175,75 +111,3 @@ IEnumerable<Position> Neighbours(Position pos)
             yield return npos;
     }
 }
-
-// public struct RawColor
-// {
-//     public readonly byte R, G, B;
-//     
-//     public RawColor(byte r, byte g, byte b)
-//     {
-// 	(R, G, B) = (r, g, b);
-//     }
-//     
-//     public static RawColor Random(Random rand)
-//     {
-// 	byte r = (byte)rand.Next(256);
-// 	byte g = (byte)rand.Next(256);
-// 	byte b = (byte)rand.Next(256);
-// 	return new RawColor(r, g, b);
-//     }
-//     
-//     public static RawColor Gray(byte value)
-//     {
-// 	return new RawColor(value, value, value);
-//     }
-// }
-// 
-// 
-// public class RawBitmap
-// {
-//     public readonly int Width;
-//     public readonly int Height;
-//     private readonly byte[] ImageBytes;
-// 
-//     public RawBitmap(int width, int height)
-//     {
-// 	Width = width;
-// 	Height = height;
-// 	ImageBytes = new byte[width * height * 4];
-//     }
-// 
-//     public void SetPixel(int x, int y, RawColor color)
-//     {
-// 	int offset = ((Height - y - 1) * Width + x) * 4;
-// 	ImageBytes[offset + 0] = color.B;
-// 	ImageBytes[offset + 1] = color.G;
-// 	ImageBytes[offset + 2] = color.R;
-//     }
-// 
-//     public byte[] GetBitmapBytes()
-//     {
-// 	const int imageHeaderSize = 54;
-// 	byte[] bmpBytes = new byte[ImageBytes.Length + imageHeaderSize];
-// 	bmpBytes[0] = (byte)'B';
-// 	bmpBytes[1] = (byte)'M';
-// 	bmpBytes[14] = 40;
-// 	Array.Copy(BitConverter.GetBytes(bmpBytes.Length), 0, bmpBytes, 2, 4);
-// 	Array.Copy(BitConverter.GetBytes(imageHeaderSize), 0, bmpBytes, 10, 4);
-// 	Array.Copy(BitConverter.GetBytes(Width), 0, bmpBytes, 18, 4);
-// 	Array.Copy(BitConverter.GetBytes(Height), 0, bmpBytes, 22, 4);
-// 	Array.Copy(BitConverter.GetBytes(32), 0, bmpBytes, 28, 2);
-// 	Array.Copy(BitConverter.GetBytes(ImageBytes.Length), 0, bmpBytes, 34, 4);
-// 	Array.Copy(ImageBytes, 0, bmpBytes, imageHeaderSize, ImageBytes.Length);
-// 	return bmpBytes;
-//     }
-// 
-//     public void Save(string filename)
-//     {
-// 	byte[] bytes = GetBitmapBytes();
-// 	File.WriteAllBytes(filename, bytes);
-//     }
-// 
-// 
-// 
-// }
