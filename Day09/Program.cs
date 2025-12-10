@@ -14,10 +14,6 @@ foreach (var line in lines)
     redtiles.Add(pos);
 }
 
-var highestY = redtiles.MaxBy(p => p.y).y + 2;
-var highestX = redtiles.MaxBy(p => p.x).x + 2;
-var lowestY = redtiles.MinBy(p => p.y).y - 2;
-var lowestX = redtiles.MinBy(p => p.x).x - 2;
 long part1 = 0;
 foreach (var posA in redtiles)
 {
@@ -50,8 +46,6 @@ var topgreen = green.MinBy(p => p.y);
 PaintGrey((topgreen.x, topgreen.y - 1));
 
 long part2 = 0;
-Position largeA = (0, 0);
-Position largeB = (0, 0);
 
 foreach (var posA in corners)
 {
